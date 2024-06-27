@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "website" {
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
-  web_acl_id = aws_wafv2_web_acl.docs.arn
+  web_acl_id = aws_wafv2_web_acl.acl.arn
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -84,7 +84,7 @@ resource "aws_cloudfront_distribution" "website" {
 
   tags = var.common_tags
 
-  depends_on = [aws_wafv2_web_acl.docs]
+  depends_on = [aws_wafv2_web_acl.acl]
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {

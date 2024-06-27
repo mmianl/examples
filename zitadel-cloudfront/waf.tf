@@ -1,5 +1,5 @@
 # WAF
-resource "aws_wafv2_web_acl" "docs" {
+resource "aws_wafv2_web_acl" "acl" {
   provider = aws.aws_useast
 
   name        = var.fqdn
@@ -76,7 +76,7 @@ resource "aws_wafv2_web_acl" "docs" {
   tags = var.common_tags
 }
 
-resource "aws_cloudwatch_log_group" "docs" {
+resource "aws_cloudwatch_log_group" "logs" {
   provider = aws.aws_useast
 
   retention_in_days = 7
@@ -85,11 +85,11 @@ resource "aws_cloudwatch_log_group" "docs" {
   tags = var.common_tags
 }
 
-resource "aws_wafv2_web_acl_logging_configuration" "docs" {
+resource "aws_wafv2_web_acl_logging_configuration" "logs" {
   provider = aws.aws_useast
 
-  log_destination_configs = [aws_cloudwatch_log_group.docs.arn]
-  resource_arn            = aws_wafv2_web_acl.docs.arn
+  log_destination_configs = [aws_cloudwatch_log_group.logs.arn]
+  resource_arn            = aws_wafv2_web_acl.acl.arn
 
   redacted_fields {
     single_header {

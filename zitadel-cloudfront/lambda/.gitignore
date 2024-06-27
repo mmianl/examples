@@ -146,5 +146,4 @@ src/*.json
 *.zip
 
 # User-specific configuration
-*/*-user-docs-config.json
 *-dist
