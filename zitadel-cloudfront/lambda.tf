@@ -88,15 +88,6 @@ resource "aws_iam_role_policy_attachment" "lambda_logging" {
   policy_arn = aws_iam_policy.lambda_logging.arn
 }
 
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  provider = aws.aws_useast
-
-  name              = "/aws/lambda/lambdaauthn"
-  retention_in_days = 7
-
-  tags = var.common_tags
-}
-
 resource "aws_lambda_function" "auth" {
   provider = aws.aws_useast
 
