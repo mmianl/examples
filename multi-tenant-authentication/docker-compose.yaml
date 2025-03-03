@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  psql:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  zitadel:
+    image: ghcr.io/zitadel/zitadel:v2.67.1
+    restart: always
+    command: start --masterkeyFromEnv --tlsMode disabled
+    environment:
+      - ZITADEL_DATABASE_POSTGRES_HOST=psql
+      - ZITADEL_DATABASE_POSTGRES_PORT=5432
+      - ZITADEL_DATABASE_POSTGRES_DATABASE=${ZITADEL_DB_NAME:-zitadel}
+      - ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME=${ZITADEL_DB_ADMIN_USER:-postgres}
+      - ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD=${ZITADEL_DB_ADMIN_PASSWORD:-postgres}
+      - ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable
+      - ZITADEL_DATABASE_POSTGRES_USER_USERNAME=${ZITADEL_DB_USER:-zitadel_user}
+      - ZITADEL_DATABASE_POSTGRES_USER_PASSWORD=${ZITADEL_DB_PASSWORD:-zitadel_password}
+      - ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE=disable
+      - ZITADEL_EXTERNALSECURE=false
+      - ZITADEL_MASTERKEY=${ZITADEL_MASTERKEY:-MasterkeyNeedsToHave32Characters}
+      - ZITADEL_FIRSTINSTANCE_ORG_NAME=ZITADEL
+    ports:
+      - "8080:8080"
+    depends_on:
+      - psql
+
+volumes:
+  postgres_data:

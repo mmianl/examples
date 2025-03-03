@@ -1,0 +1,8 @@
+log:
+  level: debug # LOG_LEVEL (debug, info, warn, error, fatal, panic)
+  format: json # LOG_FORMAT (json, text)
+  logRequests: true # LOG_REQUESTS
+
+metrics:
+  port: 8080 # METRICS_PORT
+  host: "localhost" # METRICS_HOST
